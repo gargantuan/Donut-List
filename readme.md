@@ -16,6 +16,8 @@ Donutlist.js takes an unordered list and turns it into a donut chart, which is l
 		<li>China: 20%</li>
 	</ul>
 	
+	<!-- List items must have the following format: <li>[label][spearator][value][suffix (optional)]</li> -->
+	
 	// Javascript
 	
 	$("ul").donut();
