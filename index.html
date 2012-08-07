@@ -1,0 +1,66 @@
+<html>
+	<head>
+		<title>Donut List Demo</title>
+	</head>
+	
+	<style type="text/css">
+		
+		body, html {
+			font-family: Arial;
+		}
+
+		
+		ul {
+			width: 300px;
+			list-style: none;
+			line-height: 30px;
+			font-size: 12px;
+			float: left;
+			text-align: left;
+		}
+		
+		.donut-container {
+			margin-bottom: 10px;
+			border-bottom: #000 1px solid;
+			padding-bottom: 10px;
+		}
+		
+		.donut-list-key-span {
+			padding: 0 7px !important;
+			border: #000 1px solid;
+		}
+
+		
+		
+	</style>
+	
+	<body>
+	
+		<ul id="demo">
+			<li data-key-value-separator="=">Batman Begins = 20%</li>
+			<li data-color="#666" data-key="TDK">The Dark knight: 20%</li>
+			<li data-color="#AAA">The Dark Knight Rises: 30%</li>
+		</ul>
+		
+		<ul id="demo2">
+			<li data-color="rgba(0,222,132,1)">Inception: 100kwH</li>
+			<li data-color="#234564" data-key="TDK">Memento: 333kWh</li>
+			<li data-color="#129856">The Prestige: 60kWh</li>
+			<li data-color="#123788">Doodlebug: 10kWh</li>
+		</ul>
+		
+		<script charset="utf-8" type="text/javascript" src="jquery-1.7.2.js"></script>
+		<script charset="utf-8" type="text/javascript" src="raphael-2.1.0.js"></script>
+		<script charset="utf-8" type="text/javascript" src="donutlist-0.2.js"></script>
+		<script charset="utf-8" type="text/javascript">
+			
+			$(document).ready(function(){
+				
+				var donut2 =  $("ul").donut({
+				});
+				
+			});
+			
+		</script>
+	</body>
+</html>
