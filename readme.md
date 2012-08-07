@@ -20,6 +20,10 @@ Donutlist.js takes an unordered list and turns it into a donut chart, which is l
 	
 	$("ul").donut();
 	
+##Dependancies
+- jQuery
+- Raphael.js
+	
 ##Plugin Options
 	// Defaults
 	$(ul).donut({
@@ -28,10 +32,10 @@ Donutlist.js takes an unordered list and turns it into a donut chart, which is l
 	});
 	
 - __hideList__: if true, the list items are hidden.  
-- __keyPlacement__: before or after the list item text. Useful is right aligning text.
+- __keyPlacement__: before or after the list item text. Useful if right aligning text.
 
 ##List Attributes
-It is possible to control some aspects of the donut chart such as colors and key/value separators using the proposed _data_ attribute.
+It is possible to control some aspects of the donut chart such as colors and key/value separators using the HTML5 _data_ attribute.
 
 ###Colors
 By default, _donutlist.js_ will generate random colors for each list item. However, you'll probably want to specify your own colors.
@@ -56,6 +60,9 @@ It is possible control over the appearance via CSS. _Donutlist.js_ adds the _.do
 - ul > div.donut-container
 - ul > li > span.donut-list-key-span
 
+##Detecting Percentages
+It is possible to provide _donutlist.js_  raw values (eg: 150mm, 200mm) or precaulculated percentages (eg: 10%, 90%). _donutlist.js_ will look for the '%' character in you value suffix and respond accordingly.
+
 ##Browser Compatibility
 At present, donutlist.js has been tested in the latest versions of Safari, Chrome and Firefox. It has not tested in IE yet. 
 
@@ -73,4 +80,7 @@ At present, donutlist.js has been tested in the latest versions of Safari, Chrom
 - Change values on the fly
 - Animation when changing values or adding/removing items
 - Animation and easing options (eg: ease-in-out, elastic)
+
+__This is version 0.2 of donutlist.js. I welcome any help, suggestions and/or reccomendations on the road the v1.__
+
 	 
