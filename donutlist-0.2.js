@@ -31,7 +31,6 @@
             base.prepareCanvas();
             base.drawSegments();
             
-            
 		};
 		
 		//-------------------------------------------------------------------------------
@@ -48,13 +47,19 @@
 				var label = keyValueArr[0];
 				var key = keyValueArr[0].trim().split(" ").join("_").makeKeySafe();
 				
+				// this might help when people to do stuff on the fly
+				$li.attr("data-donut-key", key);
+				
 				// Is there a custom key specified?
 				key = ($li.attr("data-key") != undefined) ? $li.attr("data-key") : key; 
 				
 				base.data[ key ] = { value:parseFloat(value) , label:label , suffix:base.extractSuffix(value) };
-				base.data[ key ].oldValue = 0;
-			    base.data[ key ].change = 0;
 			    base.data[ key ].li = $li;
+			    base.data[ key ].separator = separator;
+			    
+			    // Used when animating
+			    base.data[ key ].oldValue = 0; 
+			    base.data[ key ].change = 0;
 			    
 			    if($li.attr("data-color") === undefined){
 					base.data[ key ].color = "#"+("000"+(Math.random()*(1<<24)|0).toString(16)).substr(-6);    
@@ -74,8 +79,6 @@
 		//-------------------------------------------------------------------------------
 		// The data may or may not already be in percentages
 		// Percentages are implied when the % character is in the suffix
-		// I'm open to discussion on wether this is a good idea, but for 
-		// now I can't see anythign wrong with it.
 		base.calculatePercentages = function(){
 			
 			// sum the values
@@ -154,7 +157,7 @@
 		//-------------------------------------------------------------------------------
 		
 		base.drawSegments = function(){
-			
+						
 			base.canvas.clear();
 
 			var lineWidth = 0;
@@ -205,7 +208,7 @@
 				base.data[key].path = path;
 				base.data[key].midPoint = base.plotPointOnCircle(cx,cy,r + (lineWidth / 2), (endAngle/2) + startAngle);
 				base.data[key].midPointAngle = (endAngle/2) + startAngle + 90;
-								
+							
 				startAngle += endAngle;
 
 				
@@ -225,9 +228,39 @@
 		
 		//-------------------------------------------------------------------------------
 		
-		// Run initializer
-		return base.init();
+		base.setValue = function(key, value){
+			if( base.data[key] == undefined ) return 0;
+			base.data[key].oldValue = base.data[key].value;
 		
+			// these are used when animating
+			base.data[key].change = value - base.data[key].value;			
+			base.data[key].time = 0;
+		
+			base.data[key].value = value;
+			return 1;
+		}
+		
+		
+		//-------------------------------------------------------------------------------
+		
+		base.update = function(){
+			console.log("Updating");
+			base.calculatePercentages();
+			base.drawSegments();
+			
+			for(var key in base.data){
+				label = base.data[key].label;
+				separator = base.data[key].separator;
+				value = base.data[key].value;
+				suffix = base.data[key].suffix;
+				base.data[key].li.html(label + separator + " " +  value + suffix);
+			}
+		}
+		
+		//-------------------------------------------------------------------------------
+		
+		// Run initializer
+		base.init();
 		
 		};
 		
@@ -238,19 +271,64 @@
 		};
 		
 		$.fn.donut = function(options){
-			return this.each(function(){
-				(new $.donut(this, options));
-		
-				// HAVE YOUR PLUGIN DO STUFF HERE
-				
-		
-		  	});
+			
+			var donuts = new DonutsContainer();
+			this.each(function(){
+				donuts.arr.push((new $.donut(this, options)));			
+		  	});		  	
+		  	return donuts;
+		  	
 		};
+		
 		
 })(jQuery);
 
+//-------------------------------------------------------------------------------
+		
+// this is what the plugin returns. You can access each individual donut by 
+// calling the methods on this object. 
+ 
+function DonutsContainer(){
 
-// Utilitiesused by donutlist.js
+	var dc = this;
+	dc.arr = new Array();
+	
+	//-------------------------------------------------------------------------------
+	
+	this.setValueForKey = function( key, value ){
+	 
+		var success = 0;	
+		for(var i = 0; i < dc.arr.length; i++){
+			success += dc.arr[i].setValue(key, value);
+		}
+		
+		// Provide some feedback if the key can not
+		// be found in any of the donut lists.
+		if(success == 0) dc.warn("'"+key+"' could not be found");
+		
+		return dc;
+	}
+	
+	//-------------------------------------------------------------------------------
+	
+	this.update = function(){
+		
+		for(var i = 0; i < dc.arr.length; i++){
+			dc.arr[i].update();
+		}
+		
+		return dc;
+
+	}
+	
+	//-------------------------------------------------------------------------------
+	
+	dc.warn = function(msg){ if(window.console&&window.console.warn){window.console.warn(msg);} }
+
+};
+
+
+// Utilities used by donutlist.js
 //-------------------------------------------------------------------------------
 // Some utitlites
 String.prototype.makeKeySafe = function(){	

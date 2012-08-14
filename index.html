@@ -56,8 +56,14 @@
 			
 			$(document).ready(function(){
 				
-				var donut2 =  $("ul").donut({
+				var donut =  $("ul").donut({
 				});
+				
+				console.log(donut);
+				
+				// this should throw a warning
+				//donut.setValueForKey("QWERTY", 1);
+				donut.setValueForKey("TDK", 53).update();
 				
 			});
 			
