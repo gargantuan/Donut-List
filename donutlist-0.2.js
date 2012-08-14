@@ -253,8 +253,13 @@
 				separator = base.data[key].separator;
 				value = base.data[key].value;
 				suffix = base.data[key].suffix;
-				base.data[key].li.html(label + separator + " " +  value + suffix);
+				// There's got to be a neater way to keep the key?
+				var li = base.data[key].li;
+				var key = li.find(".donut-list-key-span");
+				li.html(  label + separator + " " +  value + suffix);
+				li.prepend(key);
 			}
+			
 		}
 		
 		//-------------------------------------------------------------------------------
